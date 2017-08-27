@@ -26,6 +26,20 @@ class PostRepository implements PostRepositoryInterface
 
     public function findById($id)
     {
+        $post = $this->getById($id);
+
+        if ( !$post ) {
+            return [
+                'status' => 'error',
+                'message' => "Post with id of {$id} not found!"
+            ];
+        }
+
+        return $post;
+    }
+
+    public function getById($id)
+    {
         return $this
             ->post
             ->where('id', $id)
@@ -43,7 +57,7 @@ class PostRepository implements PostRepositoryInterface
 
     public function deleteById($id)
     {
-        $post = $this->findById($id);
+        $post = $this->getById($id);
 
         if ( !$post ) {
             return [
@@ -62,7 +76,7 @@ class PostRepository implements PostRepositoryInterface
 
     public function updateById(array $attributes, $id)
     {
-        $post = $this->findById($id);
+        $post = $this->getById($id);
 
         if ( !$post ) {
             return [

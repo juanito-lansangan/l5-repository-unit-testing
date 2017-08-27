@@ -25,13 +25,27 @@ class UserRepository implements UserRepositoryInterface
             ->get();
     }
 
-    public function findById($id)
+    public function getById($id)
     {
         return $this
             ->user
             ->where('id', $id)
             ->with('posts')
             ->first();
+    }
+
+    public function findById($id)
+    {
+        $user = $this->getById($id);
+
+        if ( !$user ) {
+            return [
+                'status' => 'error',
+                'message' => "User with id of {$id} not found!"
+            ];
+        }
+
+        return $user;
     }
 
     public function findByEmail($email)
@@ -50,7 +64,7 @@ class UserRepository implements UserRepositoryInterface
 
     public function updateById(array $attributes, $id)
     {
-        $user = $this->findById($id);
+        $user = $this->getById($id);
 
         if ( !$user ) {
             return [
@@ -60,7 +74,7 @@ class UserRepository implements UserRepositoryInterface
         }
 
         $user = $user->fill($attributes);
-        
+
         $user->save();
 
         return [

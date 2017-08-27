@@ -6,6 +6,7 @@ interface BaseRepositoryInterface
 {
     public function create(array $attributes);
     public function findById($id);
+    public function getById($id);
     public function all();
     public function deleteById($id);
     public function updateById(array $attributes, $id);

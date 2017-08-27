@@ -16,9 +16,21 @@ class TagRepository implements TagRepositoryInterface
         return $this->tag->create($attributes);
     }
 
-    public function findById($id)
+    public function getById($id)
     {
         return $this->tag->find($id);
+    }
+
+    public function findById($id)
+    {
+        $tag = $this->getById($id);
+
+        if ( !$tag ) {
+            return [
+                'status' => 'error',
+                'message' => "Tag with id of {$id} not found!"
+            ];
+        }
     }
 
     public function findByName($name)
@@ -38,16 +50,18 @@ class TagRepository implements TagRepositoryInterface
 
     public function updateById(array $attributes, $id)
     {
-        $tag = $this->findById($id);
+        $tag = $this->getById($id);
 
-        if ( !$post ) {
+        if ( !$tag ) {
             return [
                 'status' => 'error',
                 'message' => "Tag with id of {$id} not found!"
             ];
         }
 
-        $tag = $tag->fill($attributes)->save();
+        $tag = $tag->fill($attributes);
+        
+        $tag->save();
 
         return [
             'status' => 'ok',
