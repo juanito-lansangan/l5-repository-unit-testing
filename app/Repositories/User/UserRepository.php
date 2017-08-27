@@ -60,6 +60,7 @@ class UserRepository implements UserRepositoryInterface
         }
 
         $user = $user->fill($attributes);
+        
         $user->save();
 
         return [
