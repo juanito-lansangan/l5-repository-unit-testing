@@ -2,6 +2,7 @@
 
 use App\Repositories\PostTag\PostTagRepositoryInterface;
 use App\Repositories\Tag\TagRepositoryInterface;
+use App\Models\PostTag;
 
 class PostTagRepository implements PostTagRepositoryInterface
 {
@@ -23,7 +24,9 @@ class PostTagRepository implements PostTagRepositoryInterface
             $tag = $this->tagRepo->create(['name' => $tagName]);
         }
 
-        $this->tags->push($tag);
+        $this->tags->push(new PostTag([
+          'tag_id' => $tag->id
+        ]));
     }
 
     public function addMany(array $tags)

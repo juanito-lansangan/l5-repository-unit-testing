@@ -51,7 +51,7 @@ class UserRepository implements UserRepositoryInterface
     public function updateById(array $attributes, $id)
     {
         $user = $this->findById($id);
-        
+
         if ( !$user ) {
             return [
                 'status' => 'error',
@@ -59,7 +59,8 @@ class UserRepository implements UserRepositoryInterface
             ];
         }
 
-        $user = $user->fill($attributes)->save();
+        $user = $user->fill($attributes);
+        $user->save();
 
         return [
             'status' => 'ok',

@@ -3,6 +3,8 @@
 use App\Repositories\Post\PostRepositoryInterface;
 use App\Repositories\PostTag\PostTagRepositoryInterface;
 use App\Models\Post;
+use App\Models\PostTag;
+
 
 class PostRepository implements PostRepositoryInterface
 {
@@ -18,18 +20,8 @@ class PostRepository implements PostRepositoryInterface
 
     public function create(array $attributes)
     {
-        $post = $this->post->create($attributes);
-        // return an empty array if tags key is not exist
-        $tags = $attributes['tags'] ?? [];
-        // can use array or comma delimited
-        $tags = is_array($tags) ? $tags : explode(',', $tags);
-        // create tags if exist
-        $this->postTagRepo->addMany($tags);
-        // retrieve tags
-        $tags = $this->postTagRepo->list();
-        $post = $post->tags()->saveMany($tags);
-
-        return $post;
+        $newPost = $this->post;
+        return $this->save($newPost, $attributes);
     }
 
     public function findById($id)
@@ -79,11 +71,32 @@ class PostRepository implements PostRepositoryInterface
             ];
         }
 
-        $post = $post->fill($attributes)->save();
+        $updatedPost = $this->save($post, $attributes);
 
         return [
             'status' => 'ok',
-            'updated' => $post
+            'updated' => $updatedPost,
         ];
+    }
+
+    private function save(Post $post, array $attributes)
+    {
+        $post = $post->fill($attributes);
+
+        $post->save();
+        // return an empty array if tags key is not exist
+        $tags = $attributes['tags'] ?? [];
+        // can use array or comma delimited
+        $tags = is_array($tags) ? $tags : explode(',', $tags);
+        // create tags if exist
+        $this->postTagRepo->addMany($tags);
+        // retrieve tags
+        $tags = $this->postTagRepo->list();
+        // delete existing attached tags
+        PostTag::where('post_id', $post->id)->delete();
+        // attach tags to post
+        $post->tags()->saveMany($tags);
+
+        return $post;
     }
 }
