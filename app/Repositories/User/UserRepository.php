@@ -39,10 +39,7 @@ class UserRepository implements UserRepositoryInterface
         $user = $this->getById($id);
 
         if ( !$user ) {
-            return [
-                'status' => 'error',
-                'message' => "User with id of {$id} not found!"
-            ];
+            throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException("User with id of {$id} not found!");
         }
 
         return $user;
@@ -67,10 +64,7 @@ class UserRepository implements UserRepositoryInterface
         $user = $this->getById($id);
 
         if ( !$user ) {
-            return [
-                'status' => 'error',
-                'message' => "User with id of {$id} not found!"
-            ];
+            throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException("User with id of {$id} not found!");
         }
 
         $user = $user->fill($attributes);

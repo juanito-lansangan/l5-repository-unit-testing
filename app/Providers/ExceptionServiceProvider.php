@@ -9,6 +9,8 @@ use Dingo\Api\Routing\Helpers;
 use Illuminate\Support\ServiceProvider;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ExceptionServiceProvider extends ServiceProvider
 {
