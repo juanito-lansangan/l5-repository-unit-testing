@@ -9,13 +9,38 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class PostTagTest extends TestCase
 {
-    /**
-     * A basic test example.
-     *
-     * @return void
-     */
-    public function testExample()
+
+    public function testItCanAddTag()
     {
-        $this->assertTrue(true);
+        $postTagRepo = \App::make('App\Repositories\PostTag\PostTagRepository');
+        $postTagRepo->add('laravel');
+        $tags = $postTagRepo->list();
+
+        $this->assertEquals(1, $tags->count());
+    }
+
+    public function testItCanManyAddTags()
+    {
+        $postTagRepo = \App::make('App\Repositories\PostTag\PostTagRepository');
+        $tags = [
+            ['value' => 'laravel'],
+            ['value' => 'php'],
+            ['value' => 'framework'],
+            ['value' => 'unit testing'],
+        ];
+        $postTagRepo->addMany($tags);
+        $tags = $postTagRepo->list();
+
+        $this->assertEquals(4, $tags->count());
+    }
+
+    public function testCantAddEmptyTags()
+    {
+        $postTagRepo = \App::make('App\Repositories\PostTag\PostTagRepository');
+        $tags = [];
+        $postTagRepo->addMany($tags);
+        $tags = $postTagRepo->list();
+
+        $this->assertEquals(0, $tags->count());
     }
 }
