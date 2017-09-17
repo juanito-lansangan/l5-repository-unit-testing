@@ -9,7 +9,7 @@ use App\Repositories\Post\PostRepositoryInterface;
  * Class PostController
  *
  * @SWG\Definition(
- *     definition="Post",
+ *     definition="StaticPost",
  *     required={"title","body"},
  *     @SWG\Property(property="title", type="string", example="Lorem ipsum dolor sit amet, consectetur adipisicing elit."),
  *     @SWG\Property(property="body", type="string", example="Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."),
@@ -21,15 +21,10 @@ use App\Repositories\Post\PostRepositoryInterface;
  * )
  *
  * @SWG\Definition(
- *     definition="CreatePost",
- *     @SWG\Property(property="post", ref="#/definitions/Post"),
+ *     definition="Post",
+ *     @SWG\Property(property="post", ref="#/definitions/StaticPost"),
  *     @SWG\Property(property="tags", type="array", @SWG\Items(ref="#/definitions/Tag")),
  *     @SWG\Property(property="author", ref="#/definitions/Author"),
- * )
- *
- * @SWG\Definition(
- *     definition="UpdatePost",
- *     @SWG\Property(property="post", ref="#/definitions/Post"),
  * )
  *
  * @SWG\Definition(
@@ -78,7 +73,7 @@ class PostController extends BaseController
      *          in="body",
      *          required=true,
      *          @SWG\Schema(
-     *              ref="#/definitions/CreatePost"
+     *              ref="#/definitions/Post"
      *          )
      *     ),
      *     @SWG\Response(
@@ -161,7 +156,6 @@ class PostController extends BaseController
     public function updateByPostId(Request $request, $id)
     {
         $post = $this->postRepo->updateById($request->all(), $id);
-        $this->setMeta(['resource_id' => $post->id]);
         return $this->sendResponse([
             'message' => 'Record updated successfully'
         ]);

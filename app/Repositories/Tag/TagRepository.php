@@ -14,7 +14,6 @@ class TagRepository implements TagRepositoryInterface
 
     public function create(array $attributes)
     {
-        // return $this->tag->create($attributes);
         return $this->tag->updateOrCreate(['name' => $attributes['name']]);
     }
 

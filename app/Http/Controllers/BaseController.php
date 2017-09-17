@@ -126,7 +126,7 @@ class BaseController extends Controller
         $meta['self'] = url($request->path());
 
         if(isset($meta['resource_id'])) {
-            $meta['resource_uri'] = $meta['self'] . "/" . $meta['resource_id'];
+            $meta['self'] .= "/" . $meta['resource_id'];
         }
 
         return $meta;
