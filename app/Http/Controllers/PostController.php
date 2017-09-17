@@ -161,8 +161,34 @@ class PostController extends BaseController
         ]);
     }
 
+    /**
+     * Delete Post.
+     *
+     * @SWG\Delete(
+     *     path="/posts/{id}",
+     *     summary="Delete Post",
+     *     tags={"data/post"},
+     *   @SWG\Parameter(
+     *     name="id",
+     *     type="string",
+     *     in="path"
+     *     ),
+     *     @SWG\Response(
+     *         response=200,
+     *         description="Delete a Post",
+     *         @SWG\Schema(ref="#/definitions/ResponseModel")
+     *     ),
+     * )
+     *
+     * @param  \Illuminate\Http\Request $request
+     *
+     * @throws \Exception
+     * @return \Illuminate\Http\Response
+     */
     public function deleteByPostId($id)
     {
-        return $this->postRepo->deleteById($id);
+        $this->postRepo->deleteById($id);
+
+        return $this->sendResponse('Post successfully deleted', 200);
     }
 }
