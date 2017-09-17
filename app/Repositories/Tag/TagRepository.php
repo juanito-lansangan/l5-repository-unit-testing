@@ -1,6 +1,7 @@
 <?php namespace App\Repositories\Tag;
 
 use App\Models\Tag;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class TagRepository implements TagRepositoryInterface
 {
@@ -13,7 +14,8 @@ class TagRepository implements TagRepositoryInterface
 
     public function create(array $attributes)
     {
-        return $this->tag->create($attributes);
+        // return $this->tag->create($attributes);
+        return $this->tag->create(['name' => $attributes['name']]);
     }
 
     public function getById($id)
@@ -26,11 +28,10 @@ class TagRepository implements TagRepositoryInterface
         $tag = $this->getById($id);
 
         if ( !$tag ) {
-            return [
-                'status' => 'error',
-                'message' => "Tag with id of {$id} not found!"
-            ];
+            throw new NotFoundHttpException("Tag with id of {$id} not found!");
         }
+
+        return $tag;
     }
 
     public function findByName($name)
@@ -50,22 +51,12 @@ class TagRepository implements TagRepositoryInterface
 
     public function updateById(array $attributes, $id)
     {
-        $tag = $this->getById($id);
-
-        if ( !$tag ) {
-            return [
-                'status' => 'error',
-                'message' => "Tag with id of {$id} not found!"
-            ];
-        }
+        $tag = $this->findById($id);
 
         $tag = $tag->fill($attributes);
-        
+
         $tag->save();
 
-        return [
-            'status' => 'ok',
-            'updated' => $tag
-        ];
+        return $tag;
     }
 }
