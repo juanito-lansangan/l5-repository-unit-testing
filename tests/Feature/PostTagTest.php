@@ -19,7 +19,7 @@ class PostTagTest extends TestCase
         $this->assertEquals(1, $tags->count());
     }
 
-    public function testItCanManyAddTags()
+    public function testItCanAddManyTags()
     {
         $postTagRepo = \App::make('App\Repositories\PostTag\PostTagRepository');
         $tags = [
