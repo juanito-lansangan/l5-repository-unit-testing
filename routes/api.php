@@ -25,11 +25,11 @@ $api->version('v1', function (Dingo\Api\Routing\Router $api) {
         $api->put('/{id}' , 'UserController@updateUserById');
     });
 
-    // $api->group(['prefix' => 'posts', 'namespace' => 'App\Http\Controllers'], function (Dingo\Api\Routing\Router $api) {
-    //     $api->get('/', 'PostController@index');
-    //     $api->get('/{id}', 'PostController@getByPostId');
-    //     $api->put('/{id}', 'PostController@updateByPostId');
-    //     $api->delete('/{id}', 'PostController@deleteByPostId');
-    //     $api->post('/', 'PostController@store');
-    // });
+    $api->group(['prefix' => 'posts', 'namespace' => 'App\Http\Controllers'], function (Dingo\Api\Routing\Router $api) {
+        $api->get('/', 'PostController@index');
+        $api->get('/{id}', 'PostController@getByPostId');
+        $api->put('/{id}', 'PostController@updateByPostId');
+        $api->delete('/{id}', 'PostController@deleteByPostId');
+        $api->post('/', 'PostController@store');
+    });
 });

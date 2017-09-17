@@ -17,12 +17,11 @@ class PostTagRepository implements PostTagRepositoryInterface
 
     public function add($tagName)
     {
-        $tag = $this->tagRepo->findByName($tagName);
+        // $tag = $this->tagRepo->findByName($tagName);
 
         // create tag if not exist
-        if ( !$tag ) {
-            $tag = $this->tagRepo->create(['name' => $tagName]);
-        }
+
+        $tag = $this->tagRepo->create(['name' => $tagName]);
 
         $this->tags->push(new PostTag([
           'tag_id' => $tag->id
@@ -37,7 +36,7 @@ class PostTagRepository implements PostTagRepositoryInterface
         }
 
         foreach ( $tags as $tag ) {
-            $this->add($tag);
+            $this->add($tag['value']);
         }
     }
 
