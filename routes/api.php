@@ -1,7 +1,6 @@
 <?php
 
-use Illuminate\Http\Request;
-
+$api = app('Dingo\Api\Routing\Router');
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -13,25 +12,24 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+/* Version v1 api endpoints */
+$api->version('v1', function (Dingo\Api\Routing\Router $api) {
+    $api->get('/', function() {
+        return 'dingo api';
+    });
 
-Route::get('/', function() {
-    return 'api index';
-});
+    $api->group(['prefix' => 'users', 'namespace' => 'App\Http\Controllers'], function (Dingo\Api\Routing\Router $api) {
+        $api->get('/', 'UserController@index');
+        $api->post('/', 'UserController@store');
+        $api->get('/{id}', 'UserController@getUserById');
+        $api->put('/{id}' , 'UserController@updateUserById');
+    });
 
-Route::prefix('users')->group(function() {
-    Route::get('/', 'UserController@index');
-    Route::post('/', 'UserController@store');
-    Route::get('/{id}', 'UserController@getUserById');
-    Route::put('/{id}' , 'UserController@updateUserById');
-});
-
-Route::prefix('posts')->group(function() {
-    Route::get('/', 'PostController@index');
-    Route::get('/{id}', 'PostController@getByPostId');
-    Route::put('/{id}', 'PostController@updateByPostId');
-    Route::delete('/{id}', 'PostController@deleteByPostId');
-    Route::post('/', 'PostController@store');
+    // $api->group(['prefix' => 'posts', 'namespace' => 'App\Http\Controllers'], function (Dingo\Api\Routing\Router $api) {
+    //     $api->get('/', 'PostController@index');
+    //     $api->get('/{id}', 'PostController@getByPostId');
+    //     $api->put('/{id}', 'PostController@updateByPostId');
+    //     $api->delete('/{id}', 'PostController@deleteByPostId');
+    //     $api->post('/', 'PostController@store');
+    // });
 });
