@@ -47,7 +47,7 @@ class PostRepository implements PostRepositoryInterface
         return $this
             ->post
             ->where('id', $id)
-            ->with(['author', 'tags'])
+            ->with(['author', 'tags.tag'])
             ->first();
     }
 
